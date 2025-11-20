@@ -1,6 +1,7 @@
-import views
 from django.urls import path
+from . import views
+
 urlpatterns = [
-    # example
-    path("badges/", views.get_badges),
+    path("", views.index, name="index"),
+    path("badges/", views.get_badges, name="get_badges"),
 ]
