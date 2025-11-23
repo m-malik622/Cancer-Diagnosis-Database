@@ -55,7 +55,7 @@ class Treatment(models.Model):
 
 
 # Relationship models
-class Evaluates(models.Model):
+class Evaluate(models.Model):
     doctor = models.ForeignKey("Doctor", on_delete=models.CASCADE)
     patient = models.ForeignKey("Patient", on_delete=models.CASCADE)
 
@@ -86,7 +86,7 @@ class Diagnosis(models.Model):
         return f"{self.patient} diagnosed with {self.cancer}"
 
 
-class Treats(models.Model):
+class Treat(models.Model):
     diagnosis = models.ForeignKey("Diagnosis", on_delete=models.CASCADE)
     treatment = models.ForeignKey("Treatment", on_delete=models.CASCADE)
     start_date = models.DateTimeField(auto_now=True)
