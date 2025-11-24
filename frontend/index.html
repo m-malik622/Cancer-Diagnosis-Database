@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title> CRUD things to do</title>
+        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    </head>
+    <body>
+        <div class="title">
+            <h1>Checking all the things</h1>
+            <p>Checking out your symptoms</p>
+        </div>
+
+        <div class="form">
+            <form action = "javascript:void(0);" method="POST" onsubmit="app.Add()">
+            <input type="text" id="add-todo" placeholder= "Add to database">
+            <input type="submit" value="Add" class="btn btn-primary">
+            </form>
+            <p> Here are the data entries:</p>
+            <p id="counter"></p>
+            <table class="To-do">
+                <tr class= "to-do">
+                    <tr><h3> All the cancer data:</h3></tr>
+            </tr>
+                <tbody id="entries"></tbody> 
+            </table>
+        </div>
+
+        <div id="edit-box" role="aria-hidden">
+            <form aciton="javascript:void(0);" method="POST" id="save-edit">
+            <input type="text" id="edit-data">
+            <input type="submit" value="Save" class="btn btn-success">
+            <a onclick="CloseInput()" aria-label="Close">&#10006;</a>
+            </form>
+            </div>
+        <script src="script.js"></script>
+    </body>
+</html>
