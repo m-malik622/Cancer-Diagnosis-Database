@@ -12,3 +12,15 @@ from django.shortcuts import get_object_or_404
 def index(request):
     """Simple API root for `/` during development."""
     return Response({"status": "ok", "message": "API root"}, status=status.HTTP_200_OK)
+
+@api_view(["POST"])
+def Create_Patient(request):
+    data = request.data.get #makes it easier to call
+
+    first_name = data['first_name']
+    last_name = data['last_name']
+    city_of_residence = data['city_of_residence']
+    date_of_birth = data['date_of_birth']
+    sex = data['sex']
+
+    return Response()
