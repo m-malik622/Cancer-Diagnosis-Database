@@ -23,7 +23,7 @@ def index(request):
     """Simple API root for `/` during development."""
     return Response({"status": "ok", "message": "API root"}, status=status.HTTP_200_OK)
 
-#PATIENTS
+#PATIENTS-------------------------------------------------------------
 
 @api_view(["POST"])
 def create_patient(request):
@@ -110,7 +110,7 @@ def del_patient(request, id):
         status=status.HTTP_200_OK
     )
 
-#DOCTORS
+#DOCTORS----------------------------------------------------------------
 
 @api_view(["POST"])
 def create_doctor(request):
@@ -164,11 +164,6 @@ def delete_doctor(request, id):
 
     doctor.delete()
     return Response({"message": f"Doctor {id} successfully deleted."}, status=status.HTTP_200_OK)
-
-# -------------------- PATIENT --------------------
-# todo: rennee
-# -------------------- DOCTOR --------------------
-# todo: rennee
 
 
 # -------------------- CANCER --------------------
