@@ -4,21 +4,6 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
-'''
-    # Patient
-    path("create_patient", views.create_patient),
-    path("get_patients", views.get_patients),
-    path("get_patient/<int:patient_id>", views.get_patient),
-    path("update_patient/<int:patient_id>", views.update_patient),
-    path("delete_patient", views.delete_patient),
-    
-    # Doctor
-    path("create_doctor", views.create_doctor),
-    path("get_doctors", views.get_doctors),
-    path("get_doctor/<int:doctor_id>", views.get_doctor),
-    path("update_doctor/<int:doctor_id>", views.update_doctor),
-    path("delete_doctor/<int:doctor_id>", views.delete_doctor),
-'''
 schema_view = get_schema_view(
    openapi.Info(
       title="Snippets API",
@@ -34,7 +19,19 @@ schema_view = get_schema_view(
 urlpatterns = [
     # swagger ui for testing and documentaion
    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-
+    # Patient
+    path("create_patient", views.create_patient),
+    path("get_patients", views.get_patients),
+    path("get_patient/<int:patient_id>", views.get_patient),
+    path("update_patient/<int:patient_id>", views.update_patient),
+    path("delete_patient/<int:patient_id>", views.delete_patient),
+    
+    # Doctor
+    path("create_doctor", views.create_doctor),
+    path("get_doctors", views.get_doctors),
+    path("get_doctor/<int:doctor_id>", views.get_doctor),
+    path("update_doctor/<int:doctor_id>", views.update_doctor),
+    path("delete_doctor/<int:doctor_id>", views.delete_doctor),
   
     # Cancer
     path("create_cancer", views.create_cancer),
