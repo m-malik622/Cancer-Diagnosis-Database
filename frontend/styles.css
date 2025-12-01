@@ -19,7 +19,7 @@ button:focus, input:focus, select:focus {
 
 /* --- LAYOUT --- */
 .main-container {
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 0 auto;
     background: white;
     padding: 30px;
@@ -71,7 +71,7 @@ button:focus, input:focus, select:focus {
 /* ACTION BAR */
 .action-bar {
     display: flex;
-    justify-content: space-between; /* Pushes Search to left, Add to right */
+    justify-content: space-between; 
     align-items: center;
     margin-bottom: 20px;
     padding: 10px;
@@ -117,11 +117,11 @@ button:focus, input:focus, select:focus {
     transition: background 0.2s;
 }
 
-.btn-primary { background-color: #3498db; color: white; }
-.btn-primary:hover { background-color: #2980b9; }
+.btn-primary { background-color: #2ecc71; color: white; }
+.btn-primary:hover { background-color: #27ae60; }
 
-.btn-secondary { background-color: #95a5a6; color: white; }
-.btn-secondary:hover { background-color: #7f8c8d; }
+.btn-secondary { background-color: #3498db; color: white; }
+.btn-secondary:hover { background-color: #2980b9; }
 
 .btn-success { background-color: #2ecc71; color: white; }
 .btn-success:hover { background-color: #27ae60; }
@@ -223,4 +223,9 @@ button:focus, input:focus, select:focus {
     margin-top: 20px;
     padding-top: 15px;
     border-top: 1px solid #eee;
+}
+
+.data-table td:last-child {
+    white-space: nowrap;  /* Forces buttons to stay in one line */
+    width: 1%;            /* Takes up only as much space as needed */
 }
