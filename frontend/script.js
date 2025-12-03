@@ -371,6 +371,40 @@ var app = new function() {
         select.innerHTML = html;
     };
 
+    this.Search = function() {
+        let term = document.getElementById('search-input').value.toLowerCase();
+        
+        if (!term) {
+            this.renderTable(this.currentData);
+            return;
+        }
+
+        let filtered = this.currentData.filter(item => {
+            let rawMatch = Object.values(item).some(val => String(val).toLowerCase().includes(term));
+            if (rawMatch) return true;
+
+            if (this.activeTab === 'diagnosis') {
+                let pName = (this.cache.patients[item.patient_id] || '').toLowerCase();
+                let cName = (this.cache.cancers[item.cancer_id] || '').toLowerCase();
+                return pName.includes(term) || cName.includes(term);
+            }
+            if (this.activeTab === 'evaluation') {
+                let pName = (this.cache.patients[item.patient_id] || '').toLowerCase();
+                let dName = (this.cache.doctors[item.doctor_id] || '').toLowerCase();
+                return pName.includes(term) || dName.includes(term);
+            }
+            if (this.activeTab === 'cancer_treatment') {
+                let diagName = (this.cache.diagnoses[item.diagnosis_id] || '').toLowerCase();
+                let tName = (this.cache.treatments[item.treatment_id] || '').toLowerCase();
+                return diagName.includes(term) || tName.includes(term);
+            }
+            
+            return false;
+        });
+
+        this.renderTable(filtered);
+    };
+
     // --- SORT FUNCTIONALITY ---
     this.Sort = function() {
         let criteria = document.getElementById('search-criteria').value;
