@@ -265,23 +265,41 @@ var app = new function() {
         };
 
         if (this.activeTab === 'patient') {
-            html = `<input type="text" id="f_fname" placeholder="First Name" class="form-input" required>
-                    <input type="text" id="f_lname" placeholder="Last Name" class="form-input" required>
-                    <label>DOB:</label><input type="date" id="f_dob" class="form-input" required>
-                    <select id="f_sex" class="form-input"><option value="M">Male</option><option value="F">Female</option></select>
-                    <input type="text" id="f_city" placeholder="City" class="form-input" required>`;
+            html = `<label>First Name:</label>
+                    <input type="text" id="f_fname" class="form-input" required>
+                    <label>Last Name:</label>
+                    <input type="text" id="f_lname" class="form-input" required>
+                    <label>Date of Birth:</label>
+                    <input type="date" id="f_dob" class="form-input" required>
+                    <label>Sex:</label>
+                    <select id="f_sex" class="form-input">
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                        <option value="U">Unknown</option>
+                    </select>
+                    <label>City of Residence:</label>
+                    <input type="text" id="f_city" class="form-input" required>`;
         } else if (this.activeTab === 'doctor') {
-            html = `<input type="text" id="f_fname" placeholder="First Name" class="form-input" required>
-                    <input type="text" id="f_lname" placeholder="Last Name" class="form-input" required>
-                    <input type="text" id="f_spec" placeholder="Specialty" class="form-input" required>
-                    <input type="text" id="f_city" placeholder="City" class="form-input" required>`;
+            html = `<label>First Name:</label>
+                    <input type="text" id="f_fname" class="form-input" required>
+                    <label>Last Name:</label>
+                    <input type="text" id="f_lname" class="form-input" required>
+                    <label>Specialty:</label>
+                    <input type="text" id="f_spec" class="form-input" required>
+                    <label>City of Practice:</label>
+                    <input type="text" id="f_city" class="form-input" required>`;
         } else if (this.activeTab === 'cancer') {
-            html = `<input type="text" id="f_name" placeholder="Name" class="form-input" required>
-                    <textarea id="f_desc" placeholder="Description" class="form-input"></textarea>
-                    <textarea id="f_symp" placeholder="Symptoms" class="form-input"></textarea>`;
+            html = `<label>Cancer Name:</label>
+                    <input type="text" id="f_name" class="form-input" required>
+                    <label>Description:</label>
+                    <textarea id="f_desc" class="form-input" rows="3"></textarea>
+                    <label>Symptoms:</label>
+                    <textarea id="f_symp" class="form-input" rows="3"></textarea>`;
         } else if (this.activeTab === 'treatment') {
-            html = `<input type="text" id="f_name" placeholder="Name" class="form-input" required>
-                    <textarea id="f_desc" placeholder="Description" class="form-input"></textarea>`;
+            html = `<label>Treatment Name:</label>
+                    <input type="text" id="f_name" class="form-input" required>
+                    <label>Description:</label>
+                    <textarea id="f_desc" class="form-input" rows="3"></textarea>`;
         } else if (this.activeTab === 'diagnosis') {
             html = `<label>Patient:</label>
                     <select id="f_pid" class="form-input" required>${createOptions(this.cache.patients)}</select>
@@ -298,10 +316,14 @@ var app = new function() {
                     <label>Treatment:</label>
                     <select id="f_tid" class="form-input" required>${createOptions(this.cache.treatments)}</select>
                     <label>Status:</label>
-                    <select id="f_status" class="form-input"><option value="I">Incomplete</option><option value="P">Partial</option><option value="C">Complete</option></select>
-                    <label>End Date:</label><input type="datetime-local" id="f_end" class="form-input">`;
+                    <select id="f_status" class="form-input">
+                        <option value="I">Incomplete</option>
+                        <option value="P">Partial Cure</option>
+                        <option value="C">Complete Cure</option>
+                    </select>
+                    <label>End Date:</label>
+                    <input type="datetime-local" id="f_end" class="form-input">`;
         }
-        
         container.innerHTML = html;
 
         // POPULATE FOR EDITING
