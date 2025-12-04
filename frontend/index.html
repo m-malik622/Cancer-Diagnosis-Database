@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthcare Management System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="main-container">
+        <div class="header">
+            <h1>Healthcare Management System</h1>
+        </div>
+
+        <!-- TAB NAVIGATION -->
+        <div class="tab-container">
+            <button class="tab-btn active" onclick="app.switchTab('patient')">Patients</button>
+            <button class="tab-btn" onclick="app.switchTab('doctor')">Doctors</button>
+            <button class="tab-btn" onclick="app.switchTab('cancer')">Cancers</button>
+            <button class="tab-btn" onclick="app.switchTab('treatment')">Treatments</button>
+            <button class="tab-btn" onclick="app.switchTab('diagnosis')">Diagnoses</button>
+            <button class="tab-btn" onclick="app.switchTab('evaluation')">Evaluations</button>
+            <button class="tab-btn" onclick="app.switchTab('cancer_treatment')">Cancer Treatments</button>
+        </div>
+
+        <!-- SEARCH & ACTION BAR -->
+        <div class="action-bar">
+            <div class="search-group">
+                <select id="search-criteria" class="form-input select-input" onchange="app.Sort()"></select>
+                    <!-- Options populated by JS -->
+                </select>
+                <input type="text" id="search-input" placeholder="Search term..." class="form-input text-input">
+                <button onclick="app.Search()" class="btn btn-secondary">Search</button>
+                <button onclick="app.fetchAll()" class="btn btn-outline">Reset</button>
+            </div>
+            
+            <button onclick="app.openModal('add')" class="btn btn-primary">+ Add New</button>
+        </div>
+
+        <!-- DATA TABLE -->
+        <div class="table-container">
+            <p id="counter" class="counter-text"></p>
+            <table class="data-table">
+                <thead id="table-head">
+                    <!-- Headers populated by JS -->
+                </thead>
+                <tbody id="entries">
+                    <!-- Rows populated by JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- MODAL -->
+    <div id="modal-overlay" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Add Entry</h3>
+                <span onclick="app.closeModal()" class="close-btn">&times;</span>
+            </div>
+            
+            <div class="modal-body">
+                <form action="javascript:void(0);" method="POST" id="modal-form">
+                    <div id="dynamic-form-fields" class="form-grid">
+                        <!-- Fields injected by JS -->
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" onclick="app.closeModal()" class="btn btn-secondary">Cancel</button>
+                        <button type="submit" class="btn btn-success" id="modal-save-btn">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
