@@ -402,9 +402,11 @@ var app = new function() {
         }
 
         let filtered = this.currentData.filter(item => {
+            // 1. Check raw values (IDs, Date strings, single letters like 'P')
             let rawMatch = Object.values(item).some(val => String(val).toLowerCase().includes(term));
             if (rawMatch) return true;
 
+            // 2. Check "Hidden" Cache Names (Foreign Keys)
             if (this.activeTab === 'diagnosis') {
                 let pName = (this.cache.patients[item.patient_id] || '').toLowerCase();
                 let cName = (this.cache.cancers[item.cancer_id] || '').toLowerCase();
@@ -418,7 +420,10 @@ var app = new function() {
             if (this.activeTab === 'cancer_treatment') {
                 let diagName = (this.cache.diagnoses[item.diagnosis_id] || '').toLowerCase();
                 let tName = (this.cache.treatments[item.treatment_id] || '').toLowerCase();
-                return diagName.includes(term) || tName.includes(term);
+                let statusMap = { 'I': 'incomplete', 'P': 'partial cure', 'C': 'complete cure' };
+                let statusText = statusMap[item.current_status] || '';
+                
+                return diagName.includes(term) || tName.includes(term) || statusText.includes(term);
             }
             
             return false;
