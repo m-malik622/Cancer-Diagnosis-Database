@@ -49,13 +49,16 @@ urlpatterns = [
 
     #CANCER TREATMENT
     path("add_cancerTreatment", views.create_cancerTreatment),
+    path("get_cancerTreatments", views.get_cancerTreatments),
     path("update_cancerTreatment/<int:cancerTreatment_id>", views.update_cancerTreatment),
 
     # EVALUATION
     path("create_evaluation", views.create_evaluation),
+    path("get_evaluations", views.get_evaluations),
     path("remove_evaluation/<int:evaluation_id>", views.remove_evaluation),
 
     #DIAGNOSIS
     path("create_diagnosis", views.create_diagnosis),
+    path("get_diagnoses", views.get_diagnoses),
     path("remove_diagnosis/<int:diagnosis_id>", views.remove_diagnosis),
 ]

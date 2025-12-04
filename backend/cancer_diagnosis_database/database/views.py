@@ -45,9 +45,9 @@ def get_patients(request):
 
 # get data for a patient given id
 @api_view(["GET"])
-def get_patient(request, id):
+def get_patient(request, patient_id):
     try:
-        patient = Patient.objects.values().get(id=id)
+        patient = Patient.objects.values().get(id=patient_id)
     except Patient.DoesNotExist:
         return Response({"error: patient not found"}, status=status.HTTP_404_NOT_FOUND)
     return Response({"patient": patient}, status=status.HTTP_200_OK)
@@ -55,9 +55,9 @@ def get_patient(request, id):
 
 # Update patient
 @api_view(["PUT"])
-def update_patient(request, id):
+def update_patient(request, patient_id):
     try:
-        patient = Patient.objects.get(id=id)
+        patient = Patient.objects.get(id=patient_id)
     except Patient.DoesNotExist:
         return Response(
             {"error": "Patient not found."}, status=status.HTTP_404_NOT_FOUND
@@ -82,9 +82,9 @@ def update_patient(request, id):
 
 # Delete patient
 @api_view(["GET"])
-def delete_patient(request, id):
+def delete_patient(request, patient_id):
     try:
-        patient = Patient.objects.get(id=id)
+        patient = Patient.objects.get(id=patient_id)
     except Patient.DoesNotExist:
         return Response(
             {"error": "patient not found"}, status=status.HTTP_404_NOT_FOUND
@@ -122,9 +122,9 @@ def get_doctors(request):
 
 
 @api_view(["GET"])
-def get_doctor(request, id):
+def get_doctor(request, doctor_id):
     try:
-        doctor = Doctor.objects.values().get(id=id)
+        doctor = Doctor.objects.values().get(id=doctor_id)
     except doctor.DoesNotExist:
         return Response(
             {"error": "Doctor not found."}, status=status.HTTP_404_NOT_FOUND
@@ -133,9 +133,9 @@ def get_doctor(request, id):
 
 
 @api_view(["PUT"])
-def update_doctor(request, id):
+def update_doctor(request, doctor_id):
     try:
-        doctor = doctor.objects.get(id=id)
+        doctor = Doctor.objects.get(id=doctor_id)
     except doctor.DoesNotExist:
         return Response(
             {"error": "Doctor not found."}, status=status.HTTP_404_NOT_FOUND
@@ -155,9 +155,9 @@ def update_doctor(request, id):
 
 
 @api_view(["GET"])
-def delete_doctor(request, id):
+def delete_doctor(request, doctor_id):
     try:
-        doctor = doctor.objects.get(id=id)
+        doctor = Doctor.objects.get(id=doctor_id)
     except doctor.DoesNotExist:
         return Response(
             {"error": "Doctor not found."}, status=status.HTTP_404_NOT_FOUND
@@ -262,7 +262,7 @@ def update_cancer(request, cancer_id):
     )
 
 
-@api_view(["DELETE"])
+@api_view(["GET"])
 def delete_cancer(request, cancer_id):
     """
     Delete a Cancer entry by ID.
@@ -364,7 +364,7 @@ def update_treatment(request, treatment_id):
     )
 
 
-@api_view(["DELETE"])
+@api_view(["GET"])
 def delete_treatment(request, treatment_id):
     """
     Delete a Treatment entry by ID.
@@ -382,6 +382,11 @@ def delete_treatment(request, treatment_id):
 
 
 # -------------------- CANCER TREATMENT --------------------
+@api_view(["GET"])
+def get_cancerTreatments(request):
+    treatments = list(CancerTreatment.objects.values())
+    return Response({"cancerTreatments": treatments}, status=status.HTTP_200_OK)
+
 @api_view(["POST"])
 def create_cancerTreatment(request):
     """
@@ -439,6 +444,11 @@ def update_cancerTreatment(request, cancerTreatment_id):
 
 
 # -------------------- EVALUATION --------------------
+@api_view(["GET"])
+def get_evaluations(request):
+    evaluations = list(Evaluate.objects.values())
+    return Response({"evaluations": evaluations}, status=status.HTTP_200_OK)
+
 @api_view(["POST"])
 def create_evaluation(request):
     """
@@ -478,65 +488,11 @@ def remove_evaluation(request, evaluation_id):
     return Response({"message": "Evaluation removed."}, status=status.HTTP_200_OK)
 
 
-# -------------------- CANCER TREATMENT --------------------
-@api_view(["POST"])
-def create_cancerTreatment(request):
-    """
-    Add a Treatment to a Diagnosis (Cancer Treatment entry).
-
-    Req type: POST
-    URL: /add_cancerTreatment
-    Request body:
-        - diagnosis_id: int
-        - treatment_id: int
-        - current_status: "I", "P", "C"
-        - end_date: str (datetime, optional)
-    Response:
-        - id: int (newly created CancerTreatment ID)
-        - message: str
-    """
-    data = request.data
-    diagnosis = get_object_or_404(Diagnosis, id=data.get("diagnosis_id"))
-    treatment = get_object_or_404(Treatment, id=data.get("treatment_id"))
-    treat = CancerTreatment.objects.create(
-        diagnosis=diagnosis,
-        treatment=treatment,
-        current_status=data.get("current_status"),
-        end_date=parse_datetime(data.get("end_date")) if data.get("end_date") else None,
-    )
-    return Response(
-        {"id": treat.id, "message": "Cancer treatment created."},
-        status=status.HTTP_201_CREATED,
-    )
-
-
-@api_view(["PUT"])
-def update_cancerTreatment(request, cancerTreatment_id):
-    """
-    Update an existing Cancer Treatment entry.
-
-    Req type: PUT
-    URL: /update_cancerTreatment/{cancerTreatment_id}
-    Request body:
-        - diagnosis_id: int
-        - treatment_id: int
-        - current_status: "I", "P", "C"
-        - end_date: str (datetime, optional)
-    Response:
-        - message: str
-    """
-    treat = get_object_or_404(CancerTreatment, id=cancerTreatment_id)
-    data = request.data
-    treat.diagnosis = get_object_or_404(Diagnosis, id=data.get("diagnosis_id"))
-    treat.treatment = get_object_or_404(Treatment, id=data.get("treatment_id"))
-    treat.current_status = data.get("current_status")
-    treat.end_date = (
-        parse_datetime(data.get("end_date")) if data.get("end_date") else None
-    )
-    treat.save()
-    return Response({"message": "Cancer treatment updated."}, status=status.HTTP_200_OK)
-    # -------------------- DIAGNOSIS --------------------
-
+# -------------------- DIAGNOSIS --------------------
+@api_view(["GET"])
+def get_diagnoses(request):
+    diagnoses = list(Diagnosis.objects.values())
+    return Response({"diagnoses": diagnoses}, status=status.HTTP_200_OK)
 
 @api_view(["POST"])
 def create_diagnosis(request):
