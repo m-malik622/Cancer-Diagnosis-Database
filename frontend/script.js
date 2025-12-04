@@ -326,7 +326,6 @@ var app = new function() {
         }
         container.innerHTML = html;
 
-        // POPULATE FOR EDITING
         if (mode === 'edit' && id !== null) {
             let item = this.currentData.find(x => x.id === id);
             if (item) {
@@ -367,7 +366,6 @@ var app = new function() {
 
      this.formatDate = function(dateString) {
         if (!dateString) return '-';
-        // Fix for timezone issues: append 'T00:00' if it's just a date
         let date = new Date(dateString.includes('T') ? dateString : dateString + 'T00:00');
         return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
     };
@@ -394,7 +392,7 @@ var app = new function() {
     };
 
     this.Search = function() {
-        let term = document.getElementById('search-input').value.toLowerCase();
+        let term = document.getElementById('search-input').value.toLowerCase().trim();
         
         if (!term) {
             this.renderTable(this.currentData);
@@ -402,33 +400,48 @@ var app = new function() {
         }
 
         let filtered = this.currentData.filter(item => {
-            // 1. Check raw values (IDs, Date strings, single letters like 'P')
-            let rawMatch = Object.values(item).some(val => String(val).toLowerCase().includes(term));
-            if (rawMatch) return true;
-
-            // 2. Check "Hidden" Cache Names (Foreign Keys)
+            if (String(item.id) === term) return true;
+            
             if (this.activeTab === 'diagnosis') {
                 let pName = (this.cache.patients[item.patient_id] || '').toLowerCase();
                 let cName = (this.cache.cancers[item.cancer_id] || '').toLowerCase();
                 return pName.includes(term) || cName.includes(term);
             }
+            
             if (this.activeTab === 'evaluation') {
                 let pName = (this.cache.patients[item.patient_id] || '').toLowerCase();
                 let dName = (this.cache.doctors[item.doctor_id] || '').toLowerCase();
                 return pName.includes(term) || dName.includes(term);
             }
+            
             if (this.activeTab === 'cancer_treatment') {
                 let diagName = (this.cache.diagnoses[item.diagnosis_id] || '').toLowerCase();
                 let tName = (this.cache.treatments[item.treatment_id] || '').toLowerCase();
                 let statusMap = { 'I': 'incomplete', 'P': 'partial cure', 'C': 'complete cure' };
                 let statusText = statusMap[item.current_status] || '';
+                let monthName = '';
+                if (item.end_date) {
+                    let dateObj = new Date(item.end_date.includes('T') ? item.end_date : item.end_date + 'T00:00');
+                    if (!isNaN(dateObj)) {
+                        monthName = dateObj.toLocaleDateString('en-US', { month: 'short' }).toLowerCase(); 
+                        let monthLong = dateObj.toLocaleDateString('en-US', { month: 'long' }).toLowerCase(); 
+                        monthName = monthName + ' ' + monthLong; // Combine so both "nov" and "november" work
+                    }
+                }
                 
-                return diagName.includes(term) || tName.includes(term) || statusText.includes(term);
+                return diagName.includes(term) || 
+                    tName.includes(term) || 
+                    statusText.includes(term) ||
+                    monthName.includes(term);
             }
-            
-            return false;
+
+            return Object.values(item).some(val => {
+                if (val === null || val === undefined) return false;
+                return String(val).toLowerCase().includes(term);
+            });
         });
 
+        console.log("Filtered results:", filtered);
         this.renderTable(filtered);
     };
 
@@ -493,7 +506,12 @@ var app = new function() {
                     valA = (this.cache.treatments[a.treatment_id] || '').toLowerCase(); 
                     valB = (this.cache.treatments[b.treatment_id] || '').toLowerCase(); 
                 }
+                else if (criteria === 'End Date') {
+                    valA = a.end_date || '';
+                    valB = b.end_date || '';
+                }
             }
+            
             if (valA < valB) return -1;
             if (valA > valB) return 1;
             return 0;
