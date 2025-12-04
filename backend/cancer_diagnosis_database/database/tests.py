@@ -44,7 +44,6 @@ class TestDatabase(APITestCase):
         })
 
         patient_id = create_patient.json().get("id")
-        print(create_patient.json())
         self.assertIsNotNone(patient_id)
 
         response = self.client.get(f"/delete_patient/{patient_id}")
